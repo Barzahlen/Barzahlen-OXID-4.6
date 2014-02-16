@@ -24,7 +24,7 @@
 $sLangName = 'Deutsch';
 $aLang = array(
   'charset' => 'UTF-8',
-  'BARZAHLEN__PAGE_CHECKOUT_PAYMENT_DESC' => '<br/>Mit Abschluss der Bestellung erhalten Sie einen Zahlschein, den Sie sich ausdrucken oder auf Ihr Handy schicken lassen können. Bezahlen Sie den Online-Einkauf mit Hilfe des Zahlscheins in einem Barzahlen-Partnergeschäft in Ihrer Nähe. Den nächsten Barzahlen Partner finden Sie auf <a href="http://www.barzahlen.de/filialfinder" style="color: #63A924;" target="_blank">http://www.barzahlen.de/filialfinder</a>.<br/><br/>',
+  'BARZAHLEN__PAGE_CHECKOUT_PAYMENT_DESC' => '<br/>Mit Abschluss der Bestellung erhalten Sie einen Zahlschein, den Sie sich ausdrucken oder auf Ihr Handy schicken lassen können. Bezahlen Sie den Online-Einkauf mit Hilfe des Zahlscheins in einem Barzahlen-Partnergeschäft in Ihrer Nähe.<br/><br/>',
   'BARZAHLEN__PAGE_CHECKOUT_PAYMENT_SANDBOX' => 'Der <strong>Sandbox Modus</strong> ist aktiv. Allen getätigten Zahlungen wird ein Test-Zahlschein zugewiesen. Dieser kann nicht von unseren Einzelhandelspartnern verarbeitet werden.<br/><br/>',
   'BARZAHLEN__PAGE_CHECKOUT_PAYMENT_OUR_PARTNER' => '<strong>Eine Auswahl unserer Partner:</strong>',
   'BARZAHLEN__PAGE_CHECKOUT_PAYMENT_ERROR' => 'Es gab einen Fehler bei der Datenübertragung. Bitte versuchen Sie es erneut oder wählen Sie eine andere Zahlungsmethode.',

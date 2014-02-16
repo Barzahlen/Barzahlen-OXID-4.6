@@ -8,7 +8,7 @@ Alexander Diebler
 Barzahlen
 
 ==Version==
-1.0.0
+1.1.0
 
 ==Link==
 http://www.barzahlen.de

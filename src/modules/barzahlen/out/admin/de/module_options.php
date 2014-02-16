@@ -28,11 +28,11 @@ $aLang = array(
 'SHOP_MODULE_sandbox' => 'Testmodus',
 'HELP_SHOP_MODULE_sandbox' => 'Aktivieren Sie den Testmodus um Zahlungen über die Sandbox abzuwickeln.',
 'SHOP_MODULE_shopId' => 'Shop ID',
-'HELP_SHOP_MODULE_shopId' => 'Ihre Barzahlen Shop ID (https://www.barzahlen.de/merchant-area/)',
+'HELP_SHOP_MODULE_shopId' => 'Ihre Barzahlen Shop ID (https://partner.barzahlen.de/)',
 'SHOP_MODULE_paymentKey' => 'Zahlungsschlüssel',
-'HELP_SHOP_MODULE_paymentKey' => 'Ihr Barzahlen Zahlungsschlüssel (https://www.barzahlen.de/merchant-area/)',
+'HELP_SHOP_MODULE_paymentKey' => 'Ihr Barzahlen Zahlungsschlüssel (https://partner.barzahlen.de/)',
 'SHOP_MODULE_notificationKey' => 'Benachrichtigungsschlüssel',
-'HELP_SHOP_MODULE_notificationKey' => 'Ihr Barzahlen Benachrichtigungsschlüssel (https://www.barzahlen.de/merchant-area/)',
+'HELP_SHOP_MODULE_notificationKey' => 'Ihr Barzahlen Benachrichtigungsschlüssel (https://partner.barzahlen.de/)',
 'SHOP_MODULE_debug' => 'Erweitertes Logging',
 'HELP_SHOP_MODULE_debug' => 'Aktivieren Sie Debugging für zusätzliches Logging.'
 );

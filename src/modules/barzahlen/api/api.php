@@ -25,7 +25,6 @@ class Barzahlen_Api extends Barzahlen_Base {
 
   protected $_shopId; //!< merchants shop id
   protected $_paymentKey; //!< merchants payment key
-  protected $_customVar = array('', '', ''); //!< custom variables
   protected $_language = 'de'; //!< langauge code
   protected $_sandbox = false; //!< sandbox settings
   protected $_madeAttempts = 0; //!< performed attempts
@@ -45,20 +44,6 @@ class Barzahlen_Api extends Barzahlen_Base {
   }
 
   /**
-   * Lets the merchant sets custom variables.
-   *
-   * @param string $var0 First Custom Variable
-   * @param string $var1 Second Custom Variable
-   * @param string $var2 Third Custom Variable
-   */
-  public function setCustomVar($var0 = '', $var1 = '', $var2 = '') {
-
-    $this->_customVar[0] = $var0;
-    $this->_customVar[1] = $var1;
-    $this->_customVar[2] = $var2;
-  }
-
-  /**
    * Sets the language for payment / refund slip.
    *
    * @param string $language Langauge Code (ISO 639-1)
@@ -75,7 +60,7 @@ class Barzahlen_Api extends Barzahlen_Base {
    */
   public function handleRequest($request) {
 
-    $requestArray = $request->buildRequestArray($this->_shopId, $this->_language, $this->_customVar, $this->_paymentKey);
+    $requestArray = $request->buildRequestArray($this->_shopId, $this->_paymentKey, $this->_language);
     $this->_debug("API: Sending request array to Barzahlen.", $requestArray);
     $xmlResponse = $this->_connectToApi($requestArray, $request->getRequestType());
     $this->_debug("API: Received XML response from Barzahlen.", $xmlResponse);
@@ -95,7 +80,7 @@ class Barzahlen_Api extends Barzahlen_Base {
     $this->_madeAttempts++;
 
     try {
-      return $this->_sendRequest($this->_prepareCurl($requestArray, $requestType));
+      return $this->_sendRequest($requestArray, $requestType);
     }
     catch (Exception $e) {
       if ($this->_madeAttempts >= self::MAXATTEMPTS) {
@@ -106,13 +91,14 @@ class Barzahlen_Api extends Barzahlen_Base {
   }
 
   /**
-   * Prepares the curl object for the request.
+   * Send the information via HTTP POST to the given domain. A xml as anwser is expected.
+   * SSL is required for a connection to Barzahlen.
    *
-   * @param array $requestArray order information
-   * @param type $requestType type of request (payment / refund)
-   * @return object
+   * @param array $requestArray array with the information which shall be send via POST
+   * @param string $requestType type of request
+   * @return xml response from Barzahlen
    */
-  protected function _prepareCurl(array $requestArray, $requestType) {
+  protected function _sendRequest(array $requestArray, $requestType) {
 
     $callDomain = $this->_sandbox ? self::APIDOMAINSANDBOX.$requestType : self::APIDOMAIN.$requestType;
 
@@ -127,20 +113,6 @@ class Barzahlen_Api extends Barzahlen_Base {
     curl_setopt($ch, CURLOPT_CAINFO, dirname(__FILE__) . '/certs/ca-bundle.crt');
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 7);
     curl_setopt($ch, CURLOPT_HTTP_VERSION, 1.1);
-
-    return $ch;
-  }
-
-  /**
-   * Send the information via HTTP POST to the given domain. A xml as anwser is expected.
-   * SSL is required for a connection to Barzahlen.
-   *
-   * @param array $requestArray array with the information which shall be send via POST
-   * @param string $requestType type of request
-   * @return xml response from Barzahlen
-   */
-  protected function _sendRequest($ch) {
-
     $return = curl_exec($ch);
     $error = curl_error($ch);
     curl_close($ch);

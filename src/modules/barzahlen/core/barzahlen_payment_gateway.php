@@ -43,13 +43,20 @@ class barzahlen_payment_gateway extends barzahlen_payment_gateway_parent {
       return parent::executePayment($dAmount, $oOrder);
     }
 
+    $country = oxNew("oxcountry");
+    $country->load($oOrder->oxorder__oxbillcountryid->rawValue);
+
     $api = $this->_getBarzahlenApi($oOrder);
 
     $customerEmail = $oOrder->oxorder__oxbillemail->rawValue;
+    $customerStreetNr = $oOrder->oxorder__oxbillstreet->rawValue .' '. $oOrder->oxorder__oxbillstreetnr->rawValue;
+    $customerZipcode = $oOrder->oxorder__oxbillzip->rawValue;
+    $customerCity = $oOrder->oxorder__oxbillcity->rawValue;
+    $customerCountry = $country->oxcountry__oxisoalpha2->rawValue;
     $orderId = $oOrder->oxorder__oxordernr->value;
     $amount = $oOrder->oxorder__oxtotalordersum->value;
     $currency = $oOrder->oxorder__oxcurrency->rawValue;
-    $payment = new Barzahlen_Request_Payment($customerEmail, $orderId, $amount, $currency);
+    $payment = new Barzahlen_Request_Payment($customerEmail, $customerStreetNr, $customerZipcode, $customerCity, $customerCountry, $amount, $currency, $orderId);
 
     try {
       $api->handleRequest($payment);
