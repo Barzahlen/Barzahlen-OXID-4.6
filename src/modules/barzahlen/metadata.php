@@ -38,7 +38,7 @@ $aModule = array(
   ),
   'lang' => 'de',
   'thumbnail'    => 'barzahlen-logo.png',
-  'version'      => '1.1.0',
+  'version'      => '1.1.1',
   'author'       => 'Zerebro Internet GmbH',
   'url'          => 'http://www.barzahlen.de',
   'email'        => 'support@barzahlen.de',
@@ -47,16 +47,25 @@ $aModule = array(
     'thankyou'         => 'barzahlen/views/barzahlen_thankyou',
     'oxpaymentgateway' => 'barzahlen/core/barzahlen_payment_gateway'
   ),
-  'blocks'       => array(
+  'files' => array(
+    'barzahlen_callback' => 'barzahlen/views/barzahlen_callback.php',
+    'barzahlen_settings' => 'barzahlen/views/barzahlen_settings.php',
+    'barzahlen_transactions' => 'barzahlen/views/barzahlen_transactions.php'
+  ),
+  'blocks' => array(
     array('template' => 'page/checkout/payment.tpl',  'block' => 'select_payment',          'file' => 'page/checkout/payment/select_payment'),
     array('template' => 'page/checkout/payment.tpl',  'block' => 'checkout_payment_errors', 'file' => 'page/checkout/payment/checkout_payment_errors'),
     array('template' => 'page/checkout/thankyou.tpl', 'block' => 'checkout_thankyou_info',  'file' => 'page/checkout/thankyou/checkout_thankyou_info')
   ),
-  'settings'     => array(
+  'settings' => array(
     array('group' => 'main', 'name' => 'sandbox',         'type' => 'bool', 'value' => 'false'),
     array('group' => 'main', 'name' => 'shopId',          'type' => 'str',  'value' => ''),
     array('group' => 'main', 'name' => 'paymentKey',      'type' => 'str',  'value' => ''),
     array('group' => 'main', 'name' => 'notificationKey', 'type' => 'str',  'value' => ''),
     array('group' => 'main', 'name' => 'debug',           'type' => 'bool', 'value' => 'false')
+  ),
+  'templates' => array(
+    'barzahlen_settings.tpl' => 'barzahlen/out/admin/tpl/barzahlen_settings.tpl',
+    'barzahlen_transactions.tpl' => 'barzahlen/out/admin/tpl/barzahlen_transactions.tpl'
   )
 );
