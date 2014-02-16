@@ -2,13 +2,13 @@
 Barzahlen Payment Module (OXID eShop 4.6.X)
 
 ==Author==
-Alexander Diebler
+Zerebro Internet GmbH
 
 ==Prefix==
-Barzahlen
+bz
 
 ==Version==
-1.1.1
+1.1.2
 
 ==Link==
 http://www.barzahlen.de
@@ -27,24 +27,15 @@ Integrates Barzahlen payment solution into OXID eSales.
 *thankyou
 --init
 --render
---getPaymentSlipLink
---getExpirationNotice
---getInfotextOne
---getInfotextTwo
 
 *oxpaymentgateway
 --executePayment
 
 ==Installation==
 * copy contents from copy_this directory into the shop root
-* copy contents from changed_full directory into your template folder
+* use Service/Tools in admin area to upload install.sql
+* activate Barzahlen module
 * clear tmp directory
 
-==Modules==
-payment => barzahlen/views/barzahlen_payment
-thankyou => barzahlen/views/barzahlen_thankyou
-oxpaymentgateway => barzahlen/core/barzahlen_payment_gateway
-
-==Libraries==
-
 ==Ressources==
+Full User Manual: http://www.barzahlen.de/partner/integration/shopsysteme/4/oxid-eshop

@@ -1,6 +1,6 @@
-[{include file="headitem.tpl" title="BARZAHLEN__CONFIG_TITLE"|oxmultilangassign box=" "}]
+[{include file="headitem.tpl" title="BZ__CONFIG_TITLE"|oxmultilangassign box=" "}]
 
-<h1>[{oxmultilang ident="BARZAHLEN__CONFIG_TITLE"}]</h1>
+<h1>[{oxmultilang ident="BZ__CONFIG_TITLE"}]</h1>
 
 <form name="myedit" id="myedit" action="[{$oViewConf->getSelfLink()}]" method="post">
   <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
@@ -10,50 +10,50 @@
   <table cellspacing="0" cellpadding="0" border="0" style="width:100%;height:100%;">
 
     <tr>
-      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BARZAHLEN__SANDBOX" }]</td>
+      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BZ__SANDBOX" }]</td>
       <td valign="top" class="edittext">
-        <input type="hidden" name="barzahlen_config[sandbox]" value="0" />
+        <input type="hidden" name="barzahlen_config[bzSandbox]" value="0" />
         <input type="checkbox"
                class="editinput"
-               name="barzahlen_config[sandbox]"
+               name="barzahlen_config[bzSandbox]"
                value="1"
-               [{if $barzahlen_config.sandbox}]checked="checked"[{/if}] />
-               [{ oxinputhelp ident="BARZAHLEN__SANDBOX_DESC" }]
+               [{if $barzahlen_config.bzSandbox}]checked="checked"[{/if}] />
+               [{ oxinputhelp ident="BZ__SANDBOX_DESC" }]
       </td>
     </tr>
 
     <tr>
-      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BARZAHLEN__SHOPID" }]</td>
+      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BZ__SHOPID" }]</td>
       <td valign="top" class="edittext">
-        <input type="text" class="editinput" name="barzahlen_config[shopId]" value="[{$barzahlen_config.shopId}]" size="50"/>
-        [{ oxinputhelp ident="BARZAHLEN__SHOPID_DESC" }]
+        <input type="text" class="editinput" name="barzahlen_config[bzShopId]" value="[{$barzahlen_config.bzShopId}]" size="50"/>
+        [{ oxinputhelp ident="BZ__SHOPID_DESC" }]
       </td>
     </tr>
     <tr>
-      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BARZAHLEN__PAYMENTKEY" }]</td>
+      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BZ__PAYMENTKEY" }]</td>
       <td valign="top" class="edittext">
-        <input type="text" class="editinput" name="barzahlen_config[paymentKey]" value="[{$barzahlen_config.paymentKey}]" size="50"/>
-        [{ oxinputhelp ident="BARZAHLEN__PAYMENTKEY_DESC" }]
+        <input type="text" class="editinput" name="barzahlen_config[bzPaymentKey]" value="[{$barzahlen_config.bzPaymentKey}]" size="50"/>
+        [{ oxinputhelp ident="BZ__PAYMENTKEY_DESC" }]
       </td>
     </tr>
     <tr>
-      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BARZAHLEN__NOTIFICATIONKEY" }]</td>
+      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BZ__NOTIFICATIONKEY" }]</td>
       <td valign="top" class="edittext">
-        <input type="text" class="editinput" name="barzahlen_config[notificationKey]" value="[{$barzahlen_config.notificationKey}]" size="50"/>
-        [{ oxinputhelp ident="BARZAHLEN__NOTIFICATIONKEY_DESC" }]
+        <input type="text" class="editinput" name="barzahlen_config[bzNotificationKey]" value="[{$barzahlen_config.bzNotificationKey}]" size="50"/>
+        [{ oxinputhelp ident="BZ__NOTIFICATIONKEY_DESC" }]
       </td>
     </tr>
 
     <tr>
-      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BARZAHLEN__DEBUG" }]</td>
+      <td valign="top" class="edittext" width="250" nowrap="">[{ oxmultilang ident="BZ__DEBUG" }]</td>
       <td valign="top" class="edittext">
-        <input type="hidden" name="barzahlen_config[debug]" value="0" />
+        <input type="hidden" name="barzahlen_config[bzDebug]" value="0" />
         <input type="checkbox"
                class="editinput"
-               name="barzahlen_config[debug]"
+               name="barzahlen_config[bzDebug]"
                value="1"
-               [{if $barzahlen_config.debug}]checked="checked"[{/if}] />
-               [{ oxinputhelp ident="BARZAHLEN__DEBUG_DESC" }]
+               [{if $barzahlen_config.bzDebug}]checked="checked"[{/if}] />
+               [{ oxinputhelp ident="BZ__DEBUG_DESC" }]
       </td>
     </tr>
 

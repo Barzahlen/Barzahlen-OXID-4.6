@@ -71,8 +71,8 @@ class barzahlen_callback extends oxUBase {
     $sShopId = $oxConfig->getShopId();
     $sModule = oxConfig::OXMODULE_MODULE_PREFIX . 'barzahlen';
 
-    $shopId = $oxConfig->getShopConfVar('shopId', $sShopId, $sModule);
-    $notificationKey = $oxConfig->getShopConfVar('notificationKey', $sShopId, $sModule);
+    $shopId = $oxConfig->getShopConfVar('bzShopId', $sShopId, $sModule);
+    $notificationKey = $oxConfig->getShopConfVar('bzNotificationKey', $sShopId, $sModule);
 
     $this->_notification = new Barzahlen_Notification($shopId, $notificationKey, $_GET);
 

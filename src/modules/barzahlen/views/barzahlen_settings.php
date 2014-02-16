@@ -21,17 +21,17 @@
  * @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
  */
 
-require_once 'shop_config.php';
+require_once getShopBasePath().'/admin/shop_config.php';
 
 class barzahlen_settings extends Shop_Config
 {
   protected $_sThisTemplate = 'barzahlen_settings.tpl';
   protected $_sModuleId = 'barzahlen';
-  protected $_bzParams = array('sandbox' => 'bool',
-                               'shopId' => 'str',
-                               'paymentKey' => 'str',
-                               'notificationKey' => 'str',
-                               'debug' => 'bool');
+  protected $_bzParams = array('bzSandbox' => 'bool',
+                               'bzShopId' => 'str',
+                               'bzPaymentKey' => 'str',
+                               'bzNotificationKey' => 'str',
+                               'bzDebug' => 'bool');
 
   /**
    * Executes parent method parent::render() and gets the current settings.
@@ -66,6 +66,6 @@ class barzahlen_settings extends Shop_Config
       $oxConfig->saveShopConfVar($sType, $sParam, $bzConfig[$sParam], $sShopId, $sModule);
     }
 
-    $this->_aViewData["info"] = array("class" => "messagebox", "message" => "BARZAHLEN__SETTINGS_SUCCESS");
+    $this->_aViewData["info"] = array("class" => "messagebox", "message" => "BZ__SETTINGS_SUCCESS");
   }
 }

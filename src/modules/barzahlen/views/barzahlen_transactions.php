@@ -43,14 +43,14 @@ class Barzahlen_Transactions extends oxAdminView {
     $oOrder = $this->getEditObject();
     $this->_aViewData["payment"] = $oOrder->oxorder__oxpaymenttype->value;
     $this->_aViewData["transactionId"] = $oOrder->oxorder__bztransaction->value;
-    $this->_aViewData["state"] = 'BARZAHLEN__STATE_' . strtoupper($oOrder->oxorder__bzstate->value);
+    $this->_aViewData["state"] = 'BZ__STATE_' . strtoupper($oOrder->oxorder__bzstate->value);
     $this->_aViewData["currency"] = $oOrder->oxorder__oxcurrency->value;
 
     if($oOrder->oxorder__bzstate->value == 'paid') {
       if($oOrder->oxorder__bzrefunds->value != "") {
         $refundData = unserialize(str_replace("&quot;", "\"", $oOrder->oxorder__bzrefunds->value));
         foreach($refundData as $key => $refund) {
-          $refundData[$key]['state'] = 'BARZAHLEN__STATE_' . strtoupper($refund['state']);
+          $refundData[$key]['state'] = 'BZ__STATE_' . strtoupper($refund['state']);
         }
         $this->_aViewData["refunds"] = $refundData;
       }
@@ -125,10 +125,10 @@ class Barzahlen_Transactions extends oxAdminView {
     $resend = $this->_connectBarzahlenApi($request);
 
     if($resend->isValid()) {
-      $this->_aViewData["info"] = array("class" => "messagebox", "message" => "BARZAHLEN__RESEND_".strtoupper($type)."_SUCCESS");
+      $this->_aViewData["info"] = array("class" => "messagebox", "message" => "BZ__RESEND_".strtoupper($type)."_SUCCESS");
     }
     else {
-      $this->_aViewData["info"] = array("class" => "errorbox", "message" => "BARZAHLEN__RESEND_".strtoupper($type)."_ERROR");
+      $this->_aViewData["info"] = array("class" => "errorbox", "message" => "BZ__RESEND_".strtoupper($type)."_ERROR");
     }
   }
 
@@ -142,7 +142,7 @@ class Barzahlen_Transactions extends oxAdminView {
     $amount = round(filter_var(str_replace(",", ".", $_POST['refund_amount']), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),2);
 
     if($amount > $this->_getRefundable()) {
-      $this->_aViewData["info"] = array("class" => "errorbox", "message" => "BARZAHLEN__REFUND_TOO_HIGH");
+      $this->_aViewData["info"] = array("class" => "errorbox", "message" => "BZ__REFUND_TOO_HIGH");
       return;
     }
 
@@ -158,10 +158,10 @@ class Barzahlen_Transactions extends oxAdminView {
       $refundData[] = $newRefund;
       $oOrder->oxorder__bzrefunds = new oxField(serialize($refundData));
       $oOrder->save();
-      $this->_aViewData["info"] = array("class" => "messagebox", "message" => "BARZAHLEN__REFUND_SUCCESS");
+      $this->_aViewData["info"] = array("class" => "messagebox", "message" => "BZ__REFUND_SUCCESS");
     }
     else {
-      $this->_aViewData["info"] = array("class" => "errorbox", "message" => "BARZAHLEN__REFUND_ERROR");
+      $this->_aViewData["info"] = array("class" => "errorbox", "message" => "BZ__REFUND_ERROR");
     }
   }
 
@@ -196,10 +196,10 @@ class Barzahlen_Transactions extends oxAdminView {
     $sShopId = $oxConfig->getShopId();
     $sModule = oxConfig::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
 
-    $shopId = $oxConfig->getShopConfVar('shopId', $sShopId, $sModule);
-    $paymentKey = $oxConfig->getShopConfVar('paymentKey', $sShopId, $sModule);
-    $sandbox = $oxConfig->getShopConfVar('sandbox', $sShopId, $sModule);
-    $debug = $oxConfig->getShopConfVar('debug', $sShopId, $sModule);
+    $shopId = $oxConfig->getShopConfVar('bzShopId', $sShopId, $sModule);
+    $paymentKey = $oxConfig->getShopConfVar('bzPaymentKey', $sShopId, $sModule);
+    $sandbox = $oxConfig->getShopConfVar('bzSandbox', $sShopId, $sModule);
+    $debug = $oxConfig->getShopConfVar('bzDebug', $sShopId, $sModule);
 
     $api = new Barzahlen_Api($shopId, $paymentKey, $sandbox);
     $api->setDebug($debug, self::LOGFILE);
