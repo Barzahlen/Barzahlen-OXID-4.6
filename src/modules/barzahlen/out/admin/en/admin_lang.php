@@ -65,4 +65,3 @@ $aLang = array(
   'BZ__STATE_EXPIRED' => 'expired',
   'BZ__STATE_COMPLETED' => 'completed'
 );
-?>

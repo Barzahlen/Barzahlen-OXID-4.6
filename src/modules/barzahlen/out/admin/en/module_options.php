@@ -36,4 +36,3 @@ $aLang = array(
 'SHOP_MODULE_bzDebug' => 'Extended Logging',
 'HELP_SHOP_MODULE_bzDebug' => 'Activate debugging for additional logging.'
 );
-?>

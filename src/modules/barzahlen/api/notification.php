@@ -316,4 +316,3 @@ class Barzahlen_Notification extends Barzahlen_Base {
     return array($this->getCustomVar0(), $this->getCustomVar1(), $this->getCustomVar2());
   }
 }
-?>

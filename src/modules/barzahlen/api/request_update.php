@@ -71,4 +71,3 @@ class Barzahlen_Request_Update extends Barzahlen_Request_Base {
     return $this->getXmlArray('transaction-id');
   }
 }
-?>

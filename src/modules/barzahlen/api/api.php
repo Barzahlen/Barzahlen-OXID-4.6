@@ -143,4 +143,3 @@ class Barzahlen_Api extends Barzahlen_Base {
     return $return;
   }
 }
-?>

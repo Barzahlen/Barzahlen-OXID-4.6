@@ -223,6 +223,11 @@ class NotificationTest extends PHPUnit_Framework_TestCase {
                    );
 
     $this->notification = new Barzahlen_Notification(SHOPID, NOTIFICATIONKEY, $_GET);
+
+    $this->assertEquals(null, $this->notification->getState());
+    $this->assertEquals(null, $this->notification->getTransactionId());
+    $this->assertEquals(null, $this->notification->getShopId());
+    
     $this->notification->validate();
 
     $this->assertTrue($this->notification->isValid());
@@ -263,6 +268,11 @@ class NotificationTest extends PHPUnit_Framework_TestCase {
                    );
 
     $this->notification = new Barzahlen_Notification(SHOPID, NOTIFICATIONKEY, $_GET);
+
+    $this->assertEquals(null, $this->notification->getState());
+    $this->assertEquals(null, $this->notification->getOriginTransactionId());
+    $this->assertEquals(null, $this->notification->getShopId());
+
     $this->notification->validate();
 
     $this->assertTrue($this->notification->isValid());

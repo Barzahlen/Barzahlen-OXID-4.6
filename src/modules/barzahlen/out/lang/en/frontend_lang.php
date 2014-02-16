@@ -30,4 +30,3 @@ $aLang = array(
   'BZ__PAGE_CHECKOUT_PAYMENT_ERROR' => 'Payment via Barzahlen was unfortunately not possible. Please try again or select another payment method.',
   'BZ__PAGE_CHECKOUT_THANKYOU_TITLE' => 'Simple and secure online payment'
 );
-?>

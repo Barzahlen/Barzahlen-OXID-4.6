@@ -85,4 +85,3 @@ class Barzahlen_Request_Refund extends Barzahlen_Request_Base {
     return $this->getXmlArray('refund-transaction-id');
   }
 }
-?>

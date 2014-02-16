@@ -114,4 +114,3 @@ class barzahlen_payment_gateway extends barzahlen_payment_gateway_parent {
     return array_search($oOrder->getOrderLanguage(), $lgConfig);
   }
 }
-?>

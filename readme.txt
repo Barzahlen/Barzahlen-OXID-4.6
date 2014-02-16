@@ -1,5 +1,5 @@
 ==Title==
-Barzahlen Payment Module (OXID eShop 4.6.X)
+Barzahlen Payment Module (OXID eShop 4.6)
 
 ==Author==
 Zerebro Internet GmbH
@@ -8,7 +8,7 @@ Zerebro Internet GmbH
 bz
 
 ==Version==
-1.1.2
+1.1.3
 
 ==Link==
 http://www.barzahlen.de

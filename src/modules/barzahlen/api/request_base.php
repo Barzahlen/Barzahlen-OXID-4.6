@@ -132,4 +132,3 @@ abstract class Barzahlen_Request_Base extends Barzahlen_Base {
     unset($this->_xmlData['result']);
   }
 }
-?>

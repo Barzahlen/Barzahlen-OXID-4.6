@@ -17,11 +17,11 @@
 [{/if}]
 
 <div style="position: relative; float: left;">
-<h2><img src="http://cdn.barzahlen.de/images/barzahlen_logo.png" alt="[{oxmultilang ident="BZ__BARZAHLEN"}]"></h2>
+<h2><img src="https://cdn.barzahlen.de/images/barzahlen_logo.png" alt="[{oxmultilang ident="BZ__BARZAHLEN"}]"></h2>
 <div style="font-size: 1.1em; font-weight: bold; line-height: 1.5em; margin-left: 10px;">
-<img src="http://cdn.barzahlen.de/images/barzahlen_icon_website.png" width="16" height="16" alt="" style="vertical-align: -3px;"/>&nbsp;<a href="http://www.barzahlen.de" target="_blank">[{oxmultilang ident="BZ__WEBSITE"}]</a><br>
-<img src="http://cdn.barzahlen.de/images/barzahlen_icon_merchant_area.png" width="16" height="16" alt="" style="vertical-align: -3px;"/>&nbsp;<a href="https://www.barzahlen.de/merchant-area/" target="_blank">[{oxmultilang ident="BZ__MERCHANT_AREA"}]</a><br>
-<img src="http://cdn.barzahlen.de/images/barzahlen_icon_support.png" width="16" height="16" alt="" style="vertical-align: -3px;"/>&nbsp;<a href="mailto:support@barzahlen.de">[{oxmultilang ident="BZ__SUPPORT"}]</a>
+<img src="https://cdn.barzahlen.de/images/barzahlen_icon_website.png" width="16" height="16" alt="" style="vertical-align: -3px;"/>&nbsp;<a href="http://www.barzahlen.de" target="_blank">[{oxmultilang ident="BZ__WEBSITE"}]</a><br>
+<img src="https://cdn.barzahlen.de/images/barzahlen_icon_merchant_area.png" width="16" height="16" alt="" style="vertical-align: -3px;"/>&nbsp;<a href="https://www.barzahlen.de/merchant-area/" target="_blank">[{oxmultilang ident="BZ__MERCHANT_AREA"}]</a><br>
+<img src="https://cdn.barzahlen.de/images/barzahlen_icon_support.png" width="16" height="16" alt="" style="vertical-align: -3px;"/>&nbsp;<a href="mailto:support@barzahlen.de">[{oxmultilang ident="BZ__SUPPORT"}]</a>
 </div>
 </div>
 
@@ -32,7 +32,7 @@
           <tr>
             <td class="listheader first" width="30%">[{oxmultilang ident="BZ__TRANSACTION_ID"}]</td>
             <td class="listheader" width="30%">[{oxmultilang ident="BZ__STATE"}]</td>
-            <td class="listheader" width="40%"></td>
+            <td class="listheader" width="40%">&nbsp;</td>
           </tr>
           <tr>
             <td>[{ $transactionId }]</td>
@@ -59,7 +59,7 @@
       <td class="listheader first" width="30%">[{oxmultilang ident="BZ__REFUND_TRANSACTION_ID"}]</td>
       <td class="listheader" width="15%">[{oxmultilang ident="BZ__AMOUNT"}]</td>
       <td class="listheader" width="15%">[{oxmultilang ident="BZ__STATE"}]</td>
-      <td class="listheader" width="40%"></td>
+      <td class="listheader" width="40%">&nbsp;</td>
     </tr>
     [{foreach from=$refunds item=refund}]
     <tr>
@@ -83,7 +83,7 @@
     [{/foreach}]
   </table>
 [{/if}]
-[{if round($refundable) > 0}]
+[{if round($refundable,2) > 0}]
 <br><br>
   <table cellspacing="0" cellpadding="0" border="0"  style="width: 600px; text-align: center;">
     <tr>

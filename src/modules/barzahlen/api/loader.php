@@ -30,4 +30,3 @@ require_once('request_resend.php');
 require_once('request_update.php');
 require_once('exception.php');
 require_once('notification.php');
-?>
