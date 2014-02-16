@@ -21,71 +21,168 @@
  * @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
  */
 
-class RequestRefundTest extends PHPUnit_Framework_TestCase {
+class RequestRefundTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * Testing the construction of a refund request array.
+     * Using minimal parameters.
+     */
+    public function testBuildRequestArrayWithMinimumParameters()
+    {
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95');
 
-  /**
-   * Set everything that is needed for the testing up.
-   */
-  public function setUp() {
+        $requestArray = array('shop_id' => '10483',
+            'transaction_id' => '7690927',
+            'amount' => '24.95',
+            'currency' => 'EUR',
+            'language' => 'de',
+            'hash' => 'ae0ac0a5274ebfcfc7e53e328cb9e620a3e2cb67b42c5e9400e98a55291b23dacab0921f9750332a558248100079385ab776c3d2c4891e2c4fde1aa7e3101921');
 
-    $this->api = $this->getMock('Barzahlen_Api', array('_sendRequest'), array(SHOPID, PAYMENTKEY));
-    $this->refund = new Barzahlen_Request_Refund('7690927', '24.95');
-  }
+        $this->assertEquals($requestArray, $refund->buildRequestArray(SHOPID, PAYMENTKEY, 'de'));
+    }
 
-  /**
-   * Happy path test for a refund request.
-   */
-  public function testValidXmlRefundResponse() {
+    /**
+     * Testing the construction of a refund request array.
+     * Using all parameters.
+     */
+    public function testBuildRequestArrayWithCurrency()
+    {
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95', 'USD');
 
-    $xml = '<?xml version="1.0" encoding="UTF-8"?>
-            <response>
-              <origin-transaction-id>7690927</origin-transaction-id>
-              <refund-transaction-id>7691945</refund-transaction-id>
-              <result>0</result>
-              <hash>f53bff1be34d4d98fef8660d6bdf6988b55d14e81163b4c9e983abee09d24304a46edc79d1e19f3c45bc5c2265ac740d092210c1d278999808c470b59e61ef79</hash>
-            </response>';
+        $requestArray = array('shop_id' => '10483',
+            'transaction_id' => '7690927',
+            'amount' => '24.95',
+            'currency' => 'USD',
+            'language' => 'de',
+            'hash' => '0dc17ec00cc4c7f490dfa6dd30b268cfa8ada6acf83354d2fa8e01bfbba2cefd6118315186f69677bb4f36efc4983ea96f23f164899a229c74c96fc9178cd6f4');
 
-    $this->api->expects($this->once())
-              ->method('_sendRequest')
-              ->will($this->returnValue($xml));
+        $this->assertEquals($requestArray, $refund->buildRequestArray(SHOPID, PAYMENTKEY, 'de'));
+    }
 
-    $this->api->handleRequest($this->refund);
+    /**
+     * Testing XML parsing with a valid response.
+     */
+    public function testParseXmlWithValidResponse()
+    {
+        $xmlResponse = '<?xml version="1.0" encoding="UTF-8"?>
+                    <response>
+                      <origin-transaction-id>7690927</origin-transaction-id>
+                      <refund-transaction-id>7691945</refund-transaction-id>
+                      <result>0</result>
+                      <hash>f53bff1be34d4d98fef8660d6bdf6988b55d14e81163b4c9e983abee09d24304a46edc79d1e19f3c45bc5c2265ac740d092210c1d278999808c470b59e61ef79</hash>
+                    </response>';
 
-    $this->assertEquals('7690927', $this->refund->getOriginTransactionId());
-    $this->assertEquals('7691945', $this->refund->getRefundTransactionId());
-    $this->assertEquals(array('origin-transaction-id' => '7690927', 'refund-transaction-id' => '7691945'),
-                        $this->refund->getXmlArray());
-    $this->assertTrue($this->refund->isValid());
-  }
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95');
+        $refund->parseXml($xmlResponse, PAYMENTKEY);
 
-  /**
-   * Receive error xml response for a refund request.
-   *
-   * @expectedException Barzahlen_Exception
-   */
-  public function testErrorXmlRefundResponse() {
+        $this->assertEquals('7690927', $refund->getOriginTransactionId());
+        $this->assertEquals('7691945', $refund->getRefundTransactionId());
+        $this->assertEquals(array('origin-transaction-id' => '7690927', 'refund-transaction-id' => '7691945'), $refund->getXmlArray());
+        $this->assertTrue($refund->isValid());
+    }
 
-    $xml = '<?xml version="1.0" encoding="UTF-8"?>
-            <response>
-              <result>22</result>
-              <error-message>amount not valid</error-message>
-            </response>';
+    /**
+     * Testing XML parsing with an error response.
+     *
+     * @expectedException Barzahlen_Exception
+     */
+    public function testParseXmlWithErrorResponse()
+    {
+        $xmlResponse = '<?xml version="1.0" encoding="UTF-8"?>
+                    <response>
+                      <result>22</result>
+                      <error-message>amount not valid</error-message>
+                    </response>';
 
-    $this->api->expects($this->once())
-              ->method('_sendRequest')
-              ->will($this->returnValue($xml));
+        $refund = new Barzahlen_Request_Refund('7690927', '124.95');
+        $refund->parseXml($xmlResponse, PAYMENTKEY);
 
-    $this->api->handleRequest($this->refund);
-    $this->assertFalse($this->refund->isValid());
-  }
+        $this->assertFalse($refund->isValid());
+    }
 
-  /**
-   * Unset everything before the next test.
-   */
-  protected function tearDown() {
+    /**
+     * Testing XML parsing with an empty response.
+     *
+     * @expectedException Barzahlen_Exception
+     */
+    public function testParseXmlWithEmptyResponse()
+    {
+        $xmlResponse = '';
 
-    unset($this->api);
-    unset($this->refund);
-  }
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95');
+        $refund->parseXml($xmlResponse, PAYMENTKEY);
+
+        $this->assertFalse($refund->isValid());
+    }
+
+    /**
+     * Testing XML parsing with an incomplete response.
+     *
+     * @expectedException Barzahlen_Exception
+     */
+    public function testParseXmlWithIncompleteResponse()
+    {
+        $xmlResponse = '<?xml version="1.0" encoding="UTF-8"?>
+                    <response>
+                      <origin-transaction-id>7690927</origin-transaction-id>
+                      <result>0</result>
+                      <hash>f53bff1be34d4d98fef8660d6bdf6988b55d14e81163b4c9e983abee09d24304a46edc79d1e19f3c45bc5c2265ac740d092210c1d278999808c470b59e61ef79</hash>
+                    </response>';
+
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95');
+        $refund->parseXml($xmlResponse, PAYMENTKEY);
+
+        $this->assertFalse($refund->isValid());
+    }
+
+    /**
+     * Testing XML parsing with an incorrect return value.
+     *
+     * @expectedException Barzahlen_Exception
+     */
+    public function testParseXmlWithInvalidResponse()
+    {
+        $xmlResponse = '<?xml version="1.0" encoding="UTF-8"?>
+                    <response>
+                      <origin-transaction-id>7690927</origin-transaction-id>
+                      <refund-transaction-id>7691945</refund-transaction-id>
+                      <result>0</result>
+                      <hash>somerandomhash</hash>
+                    </response>';
+
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95');
+        $refund->parseXml($xmlResponse, PAYMENTKEY);
+
+        $this->assertFalse($refund->isValid());
+    }
+
+    /**
+     * Testing XML parsing with an invalid xml response.
+     *
+     * @expectedException Barzahlen_Exception
+     */
+    public function testParseXmlWithInvalidXML()
+    {
+        $xmlResponse = '<?xml version="1.0" encoding="UTF-8"?>
+                    <response>
+                      <origin-transaction-id>7690927</>
+                      <refund-transaction-id>7691945</refund-transaction-id>
+                      <result>0</result>
+                      <hash>f53bff1be34d4d98fef8660d6bdf6988b55d14e81163b4c9e983abee09d24304a46edc79d1e19f3c45bc5c2265ac740d092210c1d278999808c470b59e61ef79</hash>
+                    </response>';
+
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95');
+        $refund->parseXml($xmlResponse, PAYMENTKEY);
+
+        $this->assertFalse($refund->isValid());
+    }
+
+    /**
+     * Tests that the right request type is returned.
+     */
+    public function testGetRequestType()
+    {
+        $refund = new Barzahlen_Request_Refund('7690927', '24.95');
+        $this->assertEquals('refund', $refund->getRequestType());
+    }
 }
-?>

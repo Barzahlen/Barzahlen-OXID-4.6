@@ -23,209 +23,185 @@
 
 require_once getShopBasePath() . 'modules/barzahlen/api/loader.php';
 
-class barzahlen_callback extends oxUBase {
+class barzahlen_callback extends oxUBase
+{
+    const LOGFILE = "barzahlen.log";
+    const STATUS_OK = 200;
+    const STATUS_BAD_REQUEST = 400;
+    const STATE_PENDING = "pending";
+    const STATE_PAID = "paid";
+    const STATE_EXPIRED = "expired";
+    const STATE_REFUND_COMPLETED = "refund_completed";
+    const STATE_REFUND_EXPIRED = "refund_expired";
 
-  const LOGFILE = "barzahlen.log";
-  const STATUS_OK = 200;
-  const STATUS_BAD_REQUEST = 400;
-  const STATE_PENDING = "pending";
-  const STATE_PAID = "paid";
-  const STATE_EXPIRED = "expired";
-  const STATE_REFUND_COMPLETED = "refund_completed";
-  const STATE_REFUND_EXPIRED = "refund_expired";
+    private $_notification;
+    private $_oOrder;
 
-  private $_notification;
-  private $_oOrder;
+    public function render()
+    {
+        parent::render();
 
-  public function render() {
+        $this->_checkGetData();
 
-    parent::render();
+        if ($this->_notification->isValid()) {
 
-    $this->_checkGetData();
+            $this->_sendHeader(self::STATUS_OK);
+            $this->_getOrder();
 
-    if($this->_notification->isValid()) {
+            if ($this->_oOrder->oxorder__oxid === false) {
+                $this->_logIpnError("Unable to load order.");
+                return;
+            }
 
-      $this->_sendHeader(self::STATUS_OK);
-      $this->_getOrder();
-
-      if($this->_oOrder->oxorder__oxid === false) {
-        $this->_logIpnError("Unable to load order.");
-        return;
-      }
-
-      $this->_updateDatabase();
-    }
-
-    else {
-      $this->_sendHeader(self::STATUS_BAD_REQUEST);
-      return;
-    }
-
-    return 'page/shop/start.tpl';
-  }
-
-  /**
-   * Creates the notification object and checks the received data.
-   */
-  protected function _checkGetData() {
-
-    $oxConfig = oxConfig::getInstance();
-    $sShopId = $oxConfig->getShopId();
-    $sModule = oxConfig::OXMODULE_MODULE_PREFIX . 'barzahlen';
-
-    $shopId = $oxConfig->getShopConfVar('bzShopId', $sShopId, $sModule);
-    $notificationKey = $oxConfig->getShopConfVar('bzNotificationKey', $sShopId, $sModule);
-
-    $this->_notification = new Barzahlen_Notification($shopId, $notificationKey, $_GET);
-
-    try {
-      $this->_notification->validate();
-    }
-    catch (Exception $e) {
-      $this->_logIpnError("Notification failed: " . $e);
-    }
-  }
-
-  /**
-   * Gets the requested order from the database.
-   */
-  protected function _getOrder() {
-
-    $order = $this->_notification->getOrderId() != 0 ? $this->_notification->getOrderId() : $this->_notification->getOriginOrderId();
-
-    $rs = oxDb::getDb()->Execute("SELECT OXID FROM oxorder WHERE OXORDERNR = '". $order ."'");
-    $this->_oOrder = oxNew("oxorder");
-    $this->_oOrder->load($rs->fields[0]);
-  }
-
-  /**
-   * Calls update mehtods depending on state value.
-   */
-  protected function _updateDatabase() {
-
-    switch ($this->_notification->getState()) {
-
-      case self::STATE_PAID:
-      case self::STATE_EXPIRED:
-        $this->_updatePayment();
-        break;
-      case self::STATE_REFUND_COMPLETED:
-      case self::STATE_REFUND_EXPIRED:
-        $this->_updateRefund();
-        break;
-      default:
-        $this->_logIpnError("Unable to handle notification state. ". $this->_notification->getState());
-        break;
-    }
-  }
-
-  /**
-   * Looks up and updates orders for payment notifications.
-   *
-   * @return boolean
-   */
-  protected function _updatePayment() {
-
-    if($this->_oOrder->oxorder__bztransaction->value != $this->_notification->getTransactionId()) {
-      $this->_logIpnError("Transaction ID not valid: " .$this->_notification->getTransactionId());
-      return false;
-    }
-
-    if($this->_oOrder->oxorder__oxtotalordersum->value != $this->_notification->getAmount()) {
-      $this->_logIpnError("Transaction amount not valid for " .$this->_notification->getTransactionId());
-      return false;
-    }
-
-    if($this->_oOrder->oxorder__oxcurrency->value != $this->_notification->getCurrency()) {
-      $this->_logIpnError("Transaction currency not valid for " .$this->_notification->getTransactionId());
-      return false;
-    }
-
-    if($this->_oOrder->oxorder__bzstate->value != self::STATE_PENDING) {
-      $this->_logIpnError("Unable to change state of transaction " .$this->_notification->getTransactionId());
-      return false;
-    }
-
-    if($this->_notification->getState() == self::STATE_PAID) {
-      $this->_oOrder->oxorder__oxpaid->setValue( date( "Y-m-d H:i:s", oxUtilsDate::getInstance()->getTime() ) );
-    }
-    elseif($this->_notification->getState() == self::STATE_EXPIRED) {
-      $this->_oOrder->oxorder__oxstorno = new oxField(1);
-    }
-
-    $this->_oOrder->oxorder__bzstate = new oxField($this->_notification->getState());
-    $this->_oOrder->save();
-    return true;
-  }
-
-  /**
-   * Looks up and updates orders for refund notifications.
-   *
-   * @return boolean
-   */
-  protected function _updateRefund() {
-
-    $refunds = unserialize(str_replace("&quot;", "\"", $this->_oOrder->oxorder__bzrefunds->value));
-
-    foreach($refunds as $key => $refund) {
-
-      if($refund['refundid'] == $this->_notification->getRefundTransactionId()) {
-
-        if($refund['amount'] != $this->_notification->getAmount()) {
-          $this->_logIpnError("Refund amount not valid for " .$this->_notification->getRefundTransactionId());
-          return false;
+            $this->_updateDatabase();
+        } else {
+            $this->_sendHeader(self::STATUS_BAD_REQUEST);
+            return;
         }
 
-        if($this->_oOrder->oxorder__oxcurrency->value != $this->_notification->getCurrency()) {
-          $this->_logIpnError("Refund currency not valid for " .$this->_notification->getRefundTransactionId());
-          return false;
+        return 'page/shop/start.tpl';
+    }
+
+    /**
+     * Creates the notification object and checks the received data.
+     */
+    protected function _checkGetData()
+    {
+        $oxConfig = oxConfig::getInstance();
+        $sShopId = $oxConfig->getShopId();
+        $sModule = oxConfig::OXMODULE_MODULE_PREFIX . 'barzahlen';
+
+        $shopId = $oxConfig->getShopConfVar('bzShopId', $sShopId, $sModule);
+        $notificationKey = $oxConfig->getShopConfVar('bzNotificationKey', $sShopId, $sModule);
+
+        $this->_notification = new Barzahlen_Notification($shopId, $notificationKey, $_GET);
+
+        try {
+            $this->_notification->validate();
+        } catch (Exception $e) {
+            $this->_logIpnError("Notification failed: " . $e);
+        }
+    }
+
+    /**
+     * Gets the requested order from the database.
+     */
+    protected function _getOrder()
+    {
+        $order = $this->_notification->getOrderId() != 0 ? $this->_notification->getOrderId() : $this->_notification->getOriginOrderId();
+
+        $rs = oxDb::getDb()->Execute("SELECT OXID FROM oxorder WHERE OXORDERNR = '" . $order . "'");
+        $this->_oOrder = oxNew("oxorder");
+        $this->_oOrder->load($rs->fields[0]);
+    }
+
+    /**
+     * Calls update mehtods depending on state value.
+     */
+    protected function _updateDatabase()
+    {
+        switch ($this->_notification->getState()) {
+
+            case self::STATE_PAID:
+            case self::STATE_EXPIRED:
+                $this->_updatePayment();
+                break;
+            case self::STATE_REFUND_COMPLETED:
+            case self::STATE_REFUND_EXPIRED:
+                $this->_updateRefund();
+                break;
+            default:
+                $this->_logIpnError("Unable to handle notification state. " . $this->_notification->getState());
+                break;
+        }
+    }
+
+    /**
+     * Looks up and updates orders for payment notifications.
+     *
+     * @return boolean
+     */
+    protected function _updatePayment()
+    {
+        if ($this->_oOrder->oxorder__bztransaction->value != $this->_notification->getTransactionId()) {
+            $this->_logIpnError("Transaction ID not valid: " . $this->_notification->getTransactionId());
+            return false;
         }
 
-        if($refund['state'] != self::STATE_PENDING) {
-          $this->_logIpnError("Unable to change state of refund " .$this->_notification->getRefundTransactionId());
-          return false;
+        if ($this->_oOrder->oxorder__bzstate->value != self::STATE_PENDING) {
+            $this->_logIpnError("Unable to change state of transaction " . $this->_notification->getTransactionId());
+            return false;
         }
 
-        $refunds[$key]['state'] = str_replace("refund_", "", $this->_notification->getState());
-        $this->_oOrder->oxorder__bzrefunds = new oxField(serialize($refunds));
+        if ($this->_notification->getState() == self::STATE_PAID) {
+            $this->_oOrder->oxorder__oxpaid->setValue(date("Y-m-d H:i:s", oxUtilsDate::getInstance()->getTime()));
+        } elseif ($this->_notification->getState() == self::STATE_EXPIRED) {
+            $this->_oOrder->cancelOrder();
+        }
+
+        $this->_oOrder->oxorder__bzstate = new oxField($this->_notification->getState());
         $this->_oOrder->save();
         return true;
-      }
     }
-    $this->_logIpnError("Refund not found for given ID: " .$this->_notification->getRefundTransactionId());
-    return false;
-  }
 
-  /**
-   * Logs error message along with the received data.
-   *
-   * @param string $message
-   */
-  protected function _logIpnError($message) {
-    $data = $this->_notification->getNotificationArray() == null ? $_GET : $this->_notification->getNotificationArray();
-    $message .= ' ' .serialize($data);
-    oxUtils::getInstance()->writeToLog(date('c') . ' ' . $message . "\r\r", self::LOGFILE);
-  }
+    /**
+     * Looks up and updates orders for refund notifications.
+     *
+     * @return boolean
+     */
+    protected function _updateRefund()
+    {
+        $refunds = unserialize(str_replace("&quot;", "\"", $this->_oOrder->oxorder__bzrefunds->value));
 
-  /**
-   * Sends out a response header after the notification was checked.
-   *
-   * @param type $code
-   */
-  protected function _sendHeader($code) {
+        foreach ($refunds as $key => $refund) {
 
-    switch ($code) {
+            if ($refund['refundid'] == $this->_notification->getRefundTransactionId()) {
 
-      case self::STATUS_OK:
-        header("HTTP/1.1 200 OK");
-        header("Status: 200 OK");
-        break;
+                if ($refund['state'] != self::STATE_PENDING) {
+                    $this->_logIpnError("Unable to change state of refund " . $this->_notification->getRefundTransactionId());
+                    return false;
+                }
 
-      case self::STATUS_BAD_REQUEST:
-        header("HTTP/1.1 400 Bad Request");
-        header("Status: 400 Bad Request");
-        break;
+                $refunds[$key]['state'] = str_replace("refund_", "", $this->_notification->getState());
+                $this->_oOrder->oxorder__bzrefunds = new oxField(serialize($refunds));
+                $this->_oOrder->save();
+                return true;
+            }
+        }
+        $this->_logIpnError("Refund not found for given ID: " . $this->_notification->getRefundTransactionId());
+        return false;
     }
-  }
+
+    /**
+     * Logs error message along with the received data.
+     *
+     * @param string $message
+     */
+    protected function _logIpnError($message)
+    {
+        $data = $this->_notification->getNotificationArray() == null ? $_GET : $this->_notification->getNotificationArray();
+        $message .= ' ' . serialize($data);
+        oxUtils::getInstance()->writeToLog(date('c') . ' ' . $message . "\r\r", self::LOGFILE);
+    }
+
+    /**
+     * Sends out a response header after the notification was checked.
+     *
+     * @param type $code
+     */
+    protected function _sendHeader($code)
+    {
+        switch ($code) {
+
+            case self::STATUS_OK:
+                header("HTTP/1.1 200 OK");
+                header("Status: 200 OK");
+                break;
+
+            case self::STATUS_BAD_REQUEST:
+                header("HTTP/1.1 400 Bad Request");
+                header("Status: 400 Bad Request");
+                break;
+        }
+    }
 }
-?>

@@ -30,42 +30,44 @@ $sMetadataVersion = '1.0';
  * Module information
  */
 $aModule = array(
-  'id'           => 'barzahlen',
-  'title'        => 'Barzahlen',
-  'description'  => array(
-    'de' => 'Barzahlen bietet Ihren Kunden die M&ouml;glichkeit, online bar zu bezahlen. Sie werden in Echtzeit &uuml;ber die Zahlung benachrichtigt und profitieren von voller Zahlungsgarantie und neuen Kundengruppen. Sehen Sie wie Barzahlen funktioniert: <a href="http://www.barzahlen.de/partner/funktionsweise" target="_blank" style="color: #63A924;">http://www.barzahlen.de/partner/funktionsweise</a>',
-    'en' => 'Barzahlen let\'s your customers pay cash online. You get a payment confirmation in real-time and you benefit from our payment guarantee and new customer groups. See how Barzahlen works: <a href="http://www.barzahlen.de/partner/funktionsweise" target="_blank" style="color: #63A924;">http://www.barzahlen.de/partner/funktionsweise</a>'
-  ),
-  'lang' => 'de',
-  'thumbnail'    => 'barzahlen-logo.png',
-  'version'      => '1.1.3',
-  'author'       => 'Zerebro Internet GmbH',
-  'url'          => 'http://www.barzahlen.de',
-  'email'        => 'support@barzahlen.de',
-  'extend'       => array(
-    'payment'          => 'barzahlen/views/barzahlen_payment',
-    'thankyou'         => 'barzahlen/views/barzahlen_thankyou',
-    'oxpaymentgateway' => 'barzahlen/core/barzahlen_payment_gateway'
-  ),
-  'files' => array(
-    'barzahlen_callback' => 'barzahlen/views/barzahlen_callback.php',
-    'barzahlen_settings' => 'barzahlen/views/barzahlen_settings.php',
-    'barzahlen_transactions' => 'barzahlen/views/barzahlen_transactions.php'
-  ),
-  'blocks' => array(
-    array('template' => 'page/checkout/payment.tpl',  'block' => 'select_payment',          'file' => 'page/checkout/payment/select_payment'),
-    array('template' => 'page/checkout/payment.tpl',  'block' => 'checkout_payment_errors', 'file' => 'page/checkout/payment/checkout_payment_errors'),
-    array('template' => 'page/checkout/thankyou.tpl', 'block' => 'checkout_thankyou_info',  'file' => 'page/checkout/thankyou/checkout_thankyou_info')
-  ),
-  'settings' => array(
-    array('group' => 'main', 'name' => 'bzSandbox',         'type' => 'bool', 'value' => 'false'),
-    array('group' => 'main', 'name' => 'bzShopId',          'type' => 'str',  'value' => ''),
-    array('group' => 'main', 'name' => 'bzPaymentKey',      'type' => 'str',  'value' => ''),
-    array('group' => 'main', 'name' => 'bzNotificationKey', 'type' => 'str',  'value' => ''),
-    array('group' => 'main', 'name' => 'bzDebug',           'type' => 'bool', 'value' => 'false')
-  ),
-  'templates' => array(
-    'barzahlen_settings.tpl' => 'barzahlen/out/admin/tpl/barzahlen_settings.tpl',
-    'barzahlen_transactions.tpl' => 'barzahlen/out/admin/tpl/barzahlen_transactions.tpl'
-  )
+    'id' => 'barzahlen',
+    'title' => 'Barzahlen',
+    'description' => array(
+        'de' => 'Barzahlen bietet Ihren Kunden die M&ouml;glichkeit, online bar zu bezahlen. Sie werden in Echtzeit &uuml;ber die Zahlung benachrichtigt und profitieren von voller Zahlungsgarantie und neuen Kundengruppen. Sehen Sie wie Barzahlen funktioniert: <a href="http://www.barzahlen.de/partner/funktionsweise" target="_blank" style="color: #63A924;">http://www.barzahlen.de/partner/funktionsweise</a>',
+        'en' => 'Barzahlen let\'s your customers pay cash online. You get a payment confirmation in real-time and you benefit from our payment guarantee and new customer groups. See how Barzahlen works: <a href="http://www.barzahlen.de/partner/funktionsweise" target="_blank" style="color: #63A924;">http://www.barzahlen.de/partner/funktionsweise</a>'
+    ),
+    'lang' => 'de',
+    'thumbnail' => 'barzahlen-logo.png',
+    'version' => '1.1.4',
+    'author' => 'Zerebro Internet GmbH',
+    'url' => 'http://www.barzahlen.de',
+    'email' => 'support@barzahlen.de',
+    'extend' => array(
+        'payment'          => 'barzahlen/views/barzahlen_payment',
+        'thankyou'         => 'barzahlen/views/barzahlen_thankyou',
+        'oxpaymentgateway' => 'barzahlen/core/barzahlen_payment_gateway',
+        'oxorder'          => 'barzahlen/core/barzahlen_order',
+        'navigation'       => 'barzahlen/core/barzahlen_navigation'
+    ),
+    'files' => array(
+        'barzahlen_callback'     => 'barzahlen/views/barzahlen_callback.php',
+        'barzahlen_settings'     => 'barzahlen/views/barzahlen_settings.php',
+        'barzahlen_transactions' => 'barzahlen/views/barzahlen_transactions.php'
+    ),
+    'blocks' => array(
+        array('template' => 'page/checkout/payment.tpl',  'block' => 'select_payment',          'file' => 'page/checkout/payment/select_payment'),
+        array('template' => 'page/checkout/payment.tpl',  'block' => 'checkout_payment_errors', 'file' => 'page/checkout/payment/checkout_payment_errors'),
+        array('template' => 'page/checkout/thankyou.tpl', 'block' => 'checkout_thankyou_info',  'file' => 'page/checkout/thankyou/checkout_thankyou_info')
+    ),
+    'settings' => array(
+        array('group' => 'main', 'name' => 'bzSandbox',         'type' => 'bool', 'value' => 'false'),
+        array('group' => 'main', 'name' => 'bzShopId',          'type' => 'str',  'value' => ''),
+        array('group' => 'main', 'name' => 'bzPaymentKey',      'type' => 'str',  'value' => ''),
+        array('group' => 'main', 'name' => 'bzNotificationKey', 'type' => 'str',  'value' => ''),
+        array('group' => 'main', 'name' => 'bzDebug',           'type' => 'bool', 'value' => 'false')
+    ),
+    'templates' => array(
+        'barzahlen_settings.tpl' => 'barzahlen/out/admin/tpl/barzahlen_settings.tpl',
+        'barzahlen_transactions.tpl' => 'barzahlen/out/admin/tpl/barzahlen_transactions.tpl'
+    )
 );
