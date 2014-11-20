@@ -24,9 +24,7 @@
 $sLangName = 'English';
 $aLang = array(
     'charset' => 'UTF-8',
-    'BZ__PAGE_CHECKOUT_PAYMENT_DESC' => 'After completing your order you get a payment slip from Barzahlen that you can easily print out or have it sent via SMS to your mobile phone. With the help of that payment slip you can pay your online purchase at one of our retail partners (e.g. supermarket).<br/><br/>',
-    'BZ__PAGE_CHECKOUT_PAYMENT_SANDBOX' => 'The <strong>Sandbox Mode</strong> is active. All placed orders receive a test payment slip. Test payment slips cannot be handled by our retail partners.<br/><br/>',
-    'BZ__PAGE_CHECKOUT_PAYMENT_OUR_PARTNER' => '<strong>Pay at:</strong>',
-    'BZ__PAGE_CHECKOUT_PAYMENT_ERROR' => 'Payment via Barzahlen was unfortunately not possible. Please try again or select another payment method.',
-    'BZ__PAGE_CHECKOUT_THANKYOU_TITLE' => 'Simple and secure online payment'
+    'BZ__PAGE_CHECKOUT_PAYMENT_DESC' => 'After completing your order you will receive a payment slip from Barzahlen.de that you can easily print out or have it sent via text message to your mobile phone. With the help of that payment slip you can pay your online purchase at one of our retail partners.<br/><br/>',
+    'BZ__PAGE_CHECKOUT_PAYMENT_PAY_AT' => '<strong>Pay at:</strong>',
+    'BZ__PAGE_CHECKOUT_PAYMENT_ERROR' => 'An error occurred while transmitting your transaction. The order has been cancelled and the administrator has been notified about this. Please try again later.'
 );

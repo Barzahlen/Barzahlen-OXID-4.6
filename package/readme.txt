@@ -2,16 +2,16 @@
 Barzahlen Payment Module (OXID eShop 4.6)
 
 ==Author==
-Zerebro Internet GmbH
+Cash Payment Solutions GmbH
 
 ==Prefix==
 bz
 
 ==Version==
-1.1.4
+1.2.0
 
 ==Link==
-http://www.barzahlen.de
+https://www.barzahlen.de
 
 ==Mail==
 support@barzahlen.de
@@ -45,4 +45,4 @@ Integrates Barzahlen payment solution into OXID eSales.
 * clear tmp directory
 
 ==Ressources==
-Full User Manual: http://www.barzahlen.de/partner/integration/shopsysteme/4/oxid-eshop
+Full User Manual: https://integration.barzahlen.de/en/shopsystems/oxid/user-manual-46

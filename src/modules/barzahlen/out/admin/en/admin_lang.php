@@ -2,21 +2,7 @@
 /**
  * Barzahlen Payment Module (OXID eShop)
  *
- * NOTICE OF LICENSE
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses/
- *
- * @copyright   Copyright (c) 2012 Zerebro Internet GmbH (http://www.barzahlen.de)
+ * @copyright   Copyright (c) 2014 Cash Payment Solutions GmbH (https://www.barzahlen.de)
  * @author      Alexander Diebler
  * @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
  */
@@ -65,6 +51,27 @@ $aLang = array(
     'BZ__STATE_EXPIRED' => 'expired',
     'BZ__STATE_COMPLETED' => 'completed',
     'BZ__STATE_CANCELED' => 'canceled',
-    'BZ__PLUGIN_AVAILABLE' => 'Barzahlen Update: ',
-    'BZ__GET_NEW_PLUGIN' => 'Available at <a href="http://www.barzahlen.de/partner/integration/shopsysteme/4/oxid-eshop" target="_blank">Barzahlen.de</a> or on <a href="http://exchange.oxid-esales.com/startseite/" target="_blank">OXID eXchange</a>.'
+    'BZ__NEW_PLUGIN_AVAILABLE' => 'Version %1$s for Barzahlen.de plugin available on: <a href="%2$s" style="font-size: 1em; color: #333;" target="_blank">%2$s</a>',
+    'BZ__HELP_AREA' => '<table>
+                          <tr>
+                            <td><img src="https://integration.barzahlen.de/assets/img/tmp/icon_registrieren.png" alt="" style="max-width: 16px; max-height: 16px;"></td>
+                            <td><a href="https://partner.barzahlen.de/user/register/" style="color: #60AC30;" target="_blank">Not yet registered?</a></td>
+                          </tr>
+                          <tr>
+                            <td><img src="https://integration.barzahlen.de/assets/img/tmp/icon_handbuch.png" alt="" style="max-width: 16px; max-height: 16px;"></td>
+                            <td><a href="https://integration.barzahlen.de/en/shopsystems/oxid/user-manual-46" style="color: #60AC30;" target="_blank">User Manual</a></td>
+                          </tr>
+                          <tr>
+                            <td><img src="https://integration.barzahlen.de/assets/img/tmp/icon_conversion.png" alt="" style="max-width: 16px; max-height: 16px;"></td>
+                            <td><a href="https://integration.barzahlen.de/assets/downloads/Integrationsleitfaden Barzahlen.de.pdf" style="color: #60AC30;" target="_blank">Conversion Optimization</a></td>
+                          </tr>
+                          <tr>
+                            <td><img src="https://integration.barzahlen.de/assets/img/tmp/icon_email.png" alt="" style="max-width: 16px; max-height: 16px;"></td>
+                            <td><a href="mailto:integration@barzahlen.de" style="color: #60AC30;">integration@barzahlen.de</a></td>
+                          </tr>
+                          <tr>
+                            <td><img src="https://integration.barzahlen.de/assets/img/tmp/icon_telephone.png" alt="" style="max-width: 16px; max-height: 16px;"></td>
+                            <td>+49 (0)30 / 346 46 16 - 15</td>
+                          </tr>
+                        </table>'
 );

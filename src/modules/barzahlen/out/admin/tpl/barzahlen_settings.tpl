@@ -69,3 +69,7 @@
 [{if ($info)}]
   <br><div class="[{$info.class}]">[{oxmultilang ident=$info.message}]</div><br>
 [{/if}]
+
+<br><hr><br>
+
+[{ oxmultilang ident="BZ__HELP_AREA" }]

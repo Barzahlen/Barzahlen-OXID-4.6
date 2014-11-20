@@ -2,21 +2,7 @@
 /**
  * Barzahlen Payment Module (OXID eShop)
  *
- * NOTICE OF LICENSE
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; version 3 of the License
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see http://www.gnu.org/licenses/
- *
- * @copyright   Copyright (c) 2012 Zerebro Internet GmbH (http://www.barzahlen.de)
+ * @copyright   Copyright (c) 2014 Cash Payment Solutions GmbH (https://www.barzahlen.de)
  * @author      Alexander Diebler
  * @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
  */
@@ -77,13 +63,12 @@ class barzahlen_order extends barzahlen_order_parent
      */
     public function delete($sOxId = null)
     {
-        if ($sOxId) {
-            if (!$this->load($sOxId)) {
-                return false;
-            }
-        } elseif (!$sOxId) {
+        if (!$sOxId) {
             $sOxId = $this->getId();
-            $this->load($sOxId);
+        }
+
+        if (!$this->load($sOxId)) {
+            return false;
         }
 
         if ($this->oxorder__oxpaymenttype->value == 'oxidbarzahlen' && $this->oxorder__bzstate->value == self::STATE_PENDING) {
@@ -138,6 +123,7 @@ class barzahlen_order extends barzahlen_order_parent
 
         $api = new Barzahlen_Api($shopId, $paymentKey, $sandbox);
         $api->setDebug($debug, self::LOGFILE);
+        $api->setUserAgent('OXID v' . $oxConfig->getVersion() .  ' / Plugin v1.2.0');
         return $api;
     }
 }
