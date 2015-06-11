@@ -82,7 +82,7 @@ $aModule = array(
     ),
     'lang' => 'de',
     'thumbnail' => 'barzahlen-logo.png',
-    'version' => '1.2.0',
+    'version' => '1.2.1',
     'author' => 'Cash Payment Solutions GmbH',
     'url' => 'https://www.barzahlen.de',
     'email' => 'support@barzahlen.de',

@@ -2,7 +2,7 @@
 /**
  * Barzahlen Payment Module (OXID eShop)
  *
- * @copyright   Copyright (c) 2014 Cash Payment Solutions GmbH (https://www.barzahlen.de)
+ * @copyright   Copyright (c) 2015 Cash Payment Solutions GmbH (https://www.barzahlen.de)
  * @author      Alexander Diebler
  * @license     http://opensource.org/licenses/GPL-3.0  GNU General Public License, version 3 (GPL-3.0)
  */
@@ -123,7 +123,7 @@ class barzahlen_order extends barzahlen_order_parent
 
         $api = new Barzahlen_Api($shopId, $paymentKey, $sandbox);
         $api->setDebug($debug, self::LOGFILE);
-        $api->setUserAgent('OXID v' . $oxConfig->getVersion() .  ' / Plugin v1.2.0');
+        $api->setUserAgent('OXID v' . $oxConfig->getVersion() .  ' / Plugin v1.2.1');
         return $api;
     }
 }
